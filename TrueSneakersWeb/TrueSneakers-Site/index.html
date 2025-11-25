@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - True Sneakers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* --- ESTILOS GERAIS --- */
+        body {
+            background-color: #0f0c15; /* Fundo quase preto */
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- CARTÃO DE LOGIN --- */
+        .login-card {
+            background-color: #16121e; /* Roxo muito escuro */
+            border: 1px solid #2d2638;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- LOGO E TEXTOS --- */
+        .brand-logo {
+            color: #8a2be2; /* Roxo Neon */
+            font-weight: 900;
+            font-size: 2rem;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        /* --- ABAS (Usuário / Funcionário) --- */
+        .toggle-container {
+            background-color: #231e2e;
+            border-radius: 12px;
+            display: flex;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #888;
+            transition: 0.3s;
+        }
+
+        .toggle-btn.active {
+            background-color: #0f0c15; /* Fundo preto para o ativo */
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* --- INPUTS --- */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            margin-left: 5px;
+        }
+
+        .form-control {
+            background-color: #231e2e; /* Fundo do input */
+            border: 1px solid #231e2e;
+            color: #fff;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .form-control:focus {
+            background-color: #2a2438;
+            border-color: #8a2be2;
+            color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(138, 43, 226, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: #555;
+        }
+
+        /* --- BOTÃO --- */
+        .btn-entrar {
+            background-color: #8a2be2;
+            border: none;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-entrar:hover {
+            background-color: #7b22d3;
+        }
+
+        /* --- LINK RODAPÉ --- */
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .footer-link a {
+            color: #8a2be2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="brand-logo">TRUE</div>
+        <div class="subtitle">Entre na sua conta</div>
+
+        <div class="toggle-container">
+            <div class="toggle-btn active" id="btnUsuario" onclick="trocarAba('Usuario')">Usuário</div>
+            <div class="toggle-btn" id="btnFuncionario" onclick="trocarAba('Funcionario')">Funcionário</div>
+        </div>
+
+        <form id="formLogin">
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Senha</label>
+                <input type="password" id="senha" class="form-control" placeholder="........" required>
+            </div>
+
+            <button type="submit" class="btn btn-entrar">Entrar</button>
+
+            <div class="footer-link">
+                Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // ⚠️ CONFIRA A PORTA (5182, 5000, etc)
+        const API_URL = "http://localhost:5182/api"; 
+
+        // Começa na aba de Usuário
+        let abaAtual = 'Usuario';
+
+        function trocarAba(tipo) {
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn${tipo}`).classList.add('active');
+            abaAtual = tipo; // Atualiza a variável para sabermos onde ele clicou
+        }
+
+        document.getElementById("formLogin").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+            const btn = document.querySelector('.btn-entrar');
+
+            // Feedback visual
+            const textoOriginal = btn.innerText;
+            btn.innerText = "Verificando...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/Usuarios/login?email=${email}&senha=${senha}`, {
+                    method: "POST"
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // --- 🔒 BLOQUEIO DE SEGURANÇA (AQUI ESTÁ A MUDANÇA) ---
+                    
+                    // Se a pessoa está na aba 'Funcionario', mas o perfil dela é 'Usuario'
+                    if (abaAtual === 'Funcionario' && data.perfil === 'Usuario') {
+                        alert("⛔ ACESSO NEGADO!\n\nEsta área é restrita para colaboradores.\nPor favor, faça login na aba de Usuário.");
+                        
+                        // Reseta o botão e para tudo
+                        btn.innerText = textoOriginal;
+                        btn.disabled = false;
+                        return; 
+                    }
+                    // -------------------------------------------------------
+
+                    // Se passou, salva e redireciona
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("usuario", data.usuario);
+                    localStorage.setItem("perfil", data.perfil);
+
+                    if (abaAtual === 'Funcionario') {
+                        window.location.href = "dashboard.html";
+                    } else {
+                        window.location.href = "usuario.html";
+                    }
+
+                } else {
+                    alert("E-mail ou senha incorretos!");
+                    btn.innerText = textoOriginal;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Erro de conexão com a API.");
+                btn.innerText = textoOriginal;
+                btn.disabled = false;
+            }
+        });
+    </script>
+
+</body>
+</html>

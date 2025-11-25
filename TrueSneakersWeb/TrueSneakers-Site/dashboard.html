@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Funcionários - True Sneakers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* --- ESTILOS VISUAIS --- */
+        body { background-color: #0f0c15; color: #fff; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Navbar */
+        .navbar { background-color: #16121e; border-bottom: 1px solid #2d2638; padding: 15px; }
+        .btn-sair { border: 1px solid #444; color: #fff; border-radius: 8px; }
+        
+        /* Botão Principal */
+        .btn-roxo {
+            background-color: #8a2be2; color: white; border: none; font-weight: 600;
+            padding: 10px 20px; border-radius: 8px; transition: 0.3s;
+        }
+        .btn-roxo:hover { background-color: #7b22d3; }
+
+        /* --- CORREÇÃO DA TABELA (TEXTO BRANCO) --- */
+        .table-container { background-color: #16121e; border-radius: 12px; padding: 20px; margin-top: 30px; }
+        
+        /* Força a cor branca em tudo na tabela */
+        .table { --bs-table-bg: transparent; --bs-table-color: #fff; margin-bottom: 0; }
+        .table thead th { 
+            color: #8a2be2; /* Cabeçalho Roxo para destaque */
+            border-bottom: 1px solid #444; 
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        .table tbody td { 
+            color: #ddd; /* Texto do corpo branco/cinza claro */
+            border-bottom: 1px solid #2d2638; 
+            vertical-align: middle;
+        }
+        .table-hover tbody tr:hover td { color: #fff; background-color: #231e2e; }
+
+        .img-produto { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #444; }
+
+        /* Modal */
+        .modal-content { background-color: #16121e; color: #fff; border: 1px solid #2d2638; }
+        .modal-header, .modal-footer { border-color: #2d2638; }
+        .form-control {
+            background-color: #231e2e; border: 1px solid #8a2be2; color: #fff; border-radius: 8px;
+        }
+        .form-control:focus { background-color: #2a2438; color: #fff; border-color: #8a2be2; box-shadow: none; }
+        .btn-close { filter: invert(1); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container-fluid px-4">
+            <span class="h3 fw-bold mb-0">Painel de Funcionários</span>
+            <div class="d-flex gap-3">
+                <button class="btn btn-roxo" data-bs-toggle="modal" data-bs-target="#modalProduto">+ Adicionar Produto</button>
+                <button onclick="logout()" class="btn btn-sair">↪ Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="table-container">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Nome</th>
+                        <th>Marca</th>
+                        <th>Preço</th>
+                        <th>Tamanhos</th>
+                        <th>Estoque</th>
+                        <th class="text-end">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaProdutos">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalProduto" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Adicionar Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formProduto">
+                        <div class="mb-3"><label>Nome</label><input id="nome" type="text" class="form-control" required></div>
+                        <div class="mb-3"><label>Marca</label><input id="marca" type="text" class="form-control" placeholder="Nike" required></div>
+                        <div class="mb-3"><label>Preço</label><input id="preco" type="number" step="0.01" class="form-control" required></div>
+                        <div class="mb-3"><label>URL Imagem</label><input id="urlImagem" type="text" class="form-control" placeholder="http://..." required></div>
+                        <div class="mb-3"><label>Tamanhos</label><input id="tamanhos" type="text" class="form-control" placeholder="38, 39, 40" required></div>
+                        <div class="mb-3"><label>Estoque</label><input id="estoque" type="number" class="form-control" required></div>
+                        <button type="submit" class="btn btn-roxo w-100 mt-3">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ⚠️ CONFIRA A PORTA
+        const API = "http://localhost:5182/api";
+        const token = localStorage.getItem("token");
+
+        if (!token) window.location.href = "index.html";
+
+        async function carregar() {
+            try {
+                const res = await fetch(`${API}/Produtos`, { headers: { "Authorization": `Bearer ${token}` }});
+                const produtos = await res.json();
+                
+                const tbody = document.getElementById("tabelaProdutos");
+                tbody.innerHTML = "";
+                
+                produtos.forEach(p => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${p.urlImagem}" class="img-produto" onerror="this.src='https://via.placeholder.com/50'"></td>
+                            <td class="fw-bold">${p.nome}</td>
+                            <td>${p.marca}</td>
+                            <td>R$ ${p.preco.toFixed(2)}</td>
+                            <td><span class="badge bg-secondary">${p.tamanhos}</span></td>
+                            <td>${p.quantidadeEstoque} un</td>
+                            <td><button onclick="deletar(${p.id})" class="btn btn-sm btn-danger">🗑</button></td>
+                        </tr>
+                    `;
+                });
+            } catch (e) { console.error("Erro ao carregar", e); }
+        }
+
+        document.getElementById("formProduto").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Pega os valores
+            const nome = document.getElementById("nome").value;
+            const marca = document.getElementById("marca").value;
+            const preco = parseFloat(document.getElementById("preco").value); // Converte para número
+            const urlImagem = document.getElementById("urlImagem").value;
+            const tamanhos = document.getElementById("tamanhos").value;
+            const quantidade = parseInt(document.getElementById("estoque").value); // Converte para número
+
+            // --- 🛑 VALIDAÇÃO DE SEGURANÇA (NOVA) ---
+            if (preco <= 0) {
+                alert("⛔ ERRO: O preço do tênis deve ser maior que R$ 0,00!");
+                return; // Para o código aqui, não envia nada
+            }
+
+            if (quantidade < 0) {
+                alert("⛔ ERRO: O estoque não pode ser negativo!");
+                return;
+            }
+            // ------------------------------------------
+
+            const query = `?nome=${nome}&marca=${marca}&preco=${preco}&urlImagem=${encodeURIComponent(urlImagem)}&tamanhos=${tamanhos}&quantidade=${quantidade}`;
+
+            const res = await fetch(`${API}/Produtos${query}`, {
+                method: "POST", headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if(res.ok) {
+                location.reload();
+            } else {
+                alert("Erro ao adicionar! Verifique os dados.");
+            }
+        });
+
+        async function deletar(id) {
+            if(confirm("Tem certeza?")) {
+                await fetch(`${API}/Produtos/${id}`, { method: "DELETE", headers: { "Authorization": `Bearer ${token}` } });
+                carregar();
+            }
+        }
+
+        function logout() { localStorage.clear(); window.location.href = "index.html"; }
+        
+        carregar();
+    </script>
+</body>
+</html>

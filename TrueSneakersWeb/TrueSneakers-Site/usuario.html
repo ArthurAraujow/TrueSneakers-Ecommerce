@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja - True Sneakers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        /* --- TEMA DARK ROXO --- */
+        body { background-color: #0f0c15; color: #fff; font-family: 'Segoe UI', sans-serif; }
+        
+        /* Navbar */
+        .navbar { background-color: #0f0c15; padding: 20px 0; border-bottom: 1px solid #1f1b29; }
+        .navbar-brand { font-weight: 900; color: #fff; font-size: 1.5rem; letter-spacing: 1px; }
+        .nav-link { color: #ccc; font-size: 1.1rem; margin: 0 10px; transition: 0.3s; }
+        .nav-link:hover { color: #8a2be2; }
+
+        /* Ícone do Carrinho com Badge */
+        .cart-icon-container { position: relative; cursor: pointer; }
+        .cart-badge {
+            position: absolute; top: -8px; right: -8px;
+            background-color: #8a2be2; color: white;
+            border-radius: 50%; width: 20px; height: 20px;
+            font-size: 0.75rem; display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- CARD DO PRODUTO (Igual ao Print) --- */
+        .card-produto {
+            background-color: #16121e;
+            border: 1px solid #231e2e;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-produto:hover { transform: translateY(-5px); border-color: #8a2be2; }
+
+        /* Imagem */
+        .card-img-wrapper {
+            height: 250px; /* Altura fixa para alinhar */
+            background-color: #eef; /* Fundo claro para o tenis destacar */
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .card-img-top { max-height: 100%; max-width: 100%; object-fit: contain; padding: 10px; }
+
+        /* Corpo do Card */
+        .card-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        
+        .marca-produto { color: #a0a0a0; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 4px; }
+        .nome-produto { font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; color: #fff; height: 50px; overflow: hidden; }
+        .preco-produto { color: #8a2be2; font-size: 1.3rem; font-weight: bold; margin-bottom: 5px; }
+        .estoque-msg { font-size: 0.8rem; color: #666; margin-bottom: 15px; }
+
+        /* Inputs do Card */
+        .form-select-sm {
+            background-color: #231e2e; color: #fff; border: 1px solid #444; margin-bottom: 15px;
+        }
+        .btn-add-carrinho {
+            background-color: #8a2be2; color: white; border: none; width: 100%;
+            padding: 10px; border-radius: 8px; font-weight: 600; margin-top: auto;
+            transition: 0.3s;
+        }
+        .btn-add-carrinho:hover { background-color: #7223bd; }
+
+        /* --- CARRINHO LATERAL (OFFCANVAS) --- */
+        .offcanvas { background-color: #16121e; color: #fff; border-left: 1px solid #444; }
+        .offcanvas-header { border-bottom: 1px solid #2d2638; }
+        .cart-item { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #2d2638; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #fff; }
+        .cart-total { font-size: 1.2rem; font-weight: bold; color: #8a2be2; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TRUE SNEAKERS</a>
+            
+            <div class="d-flex align-items-center gap-4">
+                <i class="bi bi-search fs-5 text-secondary" style="cursor: pointer;"></i>
+                
+                <div class="cart-icon-container" data-bs-toggle="offcanvas" data-bs-target="#carrinhoLateral">
+                    <i class="bi bi-cart3 fs-4"></i>
+                    <span class="cart-badge" id="badgeContador">0</span>
+                </div>
+
+                <div class="dropdown">
+                    <i class="bi bi-person fs-4" data-bs-toggle="dropdown" style="cursor: pointer;"></i>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="index.html">Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 100px; padding-bottom: 50px;">
+        <h3 class="mb-4 fw-bold">Nossos Produtos</h3>
+        
+        <div class="row g-4" id="gradeProdutos">
+            <div class="text-center mt-5 text-muted">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p>Carregando tênis...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="carrinhoLateral">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title fw-bold">Seu Carrinho</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            
+            <div id="listaItensCarrinho" class="flex-grow-1 overflow-auto">
+                <p class="text-center text-muted mt-5">O carrinho está vazio.</p>
+            </div>
+
+            <div class="mt-3 pt-3 border-top border-secondary">
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Total</span>
+                    <span class="cart-total" id="txtTotal">R$ 0,00</span>
+                </div>
+                <button class="btn btn-add-carrinho w-100" onclick="finalizarCompra()">FINALIZAR COMPRA</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- CONFIGURAÇÃO ---
+        // ⚠️ VERIFIQUE A PORTA (5182, 5000, etc)
+        const API_URL = "http://localhost:5182/api"; 
+        
+        // Estado do Carrinho (Carrega do localStorage para não perder ao atualizar)
+        let carrinho = JSON.parse(localStorage.getItem('trueSneakersCart')) || [];
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener("DOMContentLoaded", () => {
+            carregarLoja();
+            atualizarCarrinhoUI();
+        });
+
+        // --- CARREGAR PRODUTOS DA API ---
+        async function carregarLoja() {
+            const container = document.getElementById("gradeProdutos");
+            
+            try {
+                // Tenta pegar produtos (usando token se tiver, ou público)
+                const token = localStorage.getItem("token");
+                const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+
+                const res = await fetch(`${API_URL}/Produtos`, { headers });
+                
+                if (!res.ok) throw new Error("Falha ao buscar produtos");
+
+                const produtos = await res.json();
+                container.innerHTML = ""; // Limpa loading
+
+                if (produtos.length === 0) {
+                    container.innerHTML = '<p class="text-white">Nenhum produto cadastrado.</p>';
+                    return;
+                }
+
+                produtos.forEach(p => {
+                    // Transforma string "38,39,40" em opções do select
+                    const tamanhosArray = p.tamanhos ? p.tamanhos.split(',') : ['Único'];
+                    let optionsHtml = '<option selected disabled>Selecione o tamanho</option>';
+                    tamanhosArray.forEach(tam => {
+                        optionsHtml += `<option value="${tam.trim()}">${tam.trim()}</option>`;
+                    });
+
+                    // Cria o HTML do Card
+                    const cardHtml = `
+                        <div class="col-md-4 col-lg-3">
+                            <div class="card-produto">
+                                <div class="card-img-wrapper">
+                                    <img src="${p.urlImagem}" class="card-img-top" onerror="this.src='https://via.placeholder.com/300?text=Sem+Imagem'">
+                                </div>
+                                <div class="card-body">
+                                    <div class="marca-produto">${p.marca || 'True Brand'}</div>
+                                    <h5 class="nome-produto">${p.nome}</h5>
+                                    <div class="preco-produto">R$ ${p.preco.toFixed(2)}</div>
+                                    <div class="estoque-msg">${p.quantidadeEstoque} disponíveis</div>
+                                    
+                                    <select class="form-select form-select-sm" id="tam-${p.id}">
+                                        ${optionsHtml}
+                                    </select>
+
+                                    <button class="btn-add-carrinho" onclick="adicionarAoCarrinho(${p.id}, '${p.nome}', ${p.preco}, '${p.urlImagem}')">
+                                        <i class="bi bi-cart-plus me-2"></i> Adicionar ao Carrinho
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += cardHtml;
+                });
+
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<p class="text-danger text-center">Erro ao carregar loja. Verifique se a API está rodando.</p>';
+            }
+        }
+
+        // --- FUNÇÕES DO CARRINHO ---
+        function adicionarAoCarrinho(id, nome, preco, img) {
+            // Pega o tamanho selecionado no card específico
+            const selectTam = document.getElementById(`tam-${id}`);
+            const tamanhoEscolhido = selectTam.value;
+
+            if (tamanhoEscolhido === "Selecione o tamanho") {
+                alert("Por favor, selecione um tamanho antes de adicionar!");
+                selectTam.focus();
+                return;
+            }
+
+            // Adiciona ao array
+            carrinho.push({ id, nome, preco, img, tamanho: tamanhoEscolhido });
+            
+            // Salva e atualiza tela
+            salvarCarrinho();
+            
+            // Abre o sidebar para feedback visual (opcional)
+            const bsOffcanvas = new bootstrap.Offcanvas('#carrinhoLateral');
+            bsOffcanvas.show();
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            salvarCarrinho();
+        }
+
+        function salvarCarrinho() {
+            localStorage.setItem('trueSneakersCart', JSON.stringify(carrinho));
+            atualizarCarrinhoUI();
+        }
+
+        function atualizarCarrinhoUI() {
+            const lista = document.getElementById("listaItensCarrinho");
+            const badge = document.getElementById("badgeContador");
+            const txtTotal = document.getElementById("txtTotal");
+
+            // Atualiza badge
+            badge.innerText = carrinho.length;
+
+            // Calcula total
+            const total = carrinho.reduce((acc, item) => acc + item.preco, 0);
+            txtTotal.innerText = `R$ ${total.toFixed(2)}`;
+
+            // Renderiza lista
+            lista.innerHTML = "";
+            if (carrinho.length === 0) {
+                lista.innerHTML = '<div class="text-center text-muted mt-5"><i class="bi bi-cart-x fs-1"></i><p>Seu carrinho está vazio.</p></div>';
+                return;
+            }
+
+            carrinho.forEach((item, index) => {
+                lista.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}" onerror="this.src='https://via.placeholder.com/50'">
+                        <div class="flex-grow-1 ms-3">
+                            <div class="fw-bold text-white" style="font-size:0.9rem">${item.nome}</div>
+                            <div class="text-muted" style="font-size:0.8rem">Tam: ${item.tamanho}</div>
+                            <div class="text-info fw-bold">R$ ${item.preco.toFixed(2)}</div>
+                        </div>
+                        <button onclick="removerItem(${index})" class="btn btn-sm btn-outline-danger border-0">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+function finalizarCompra() {
+            if (carrinho.length === 0) {
+                alert("Seu carrinho está vazio!");
+                return;
+            }
+            // Redireciona para a tela de pagamento
+            window.location.href = "pagamento.html";
+        }
+    </script>
+</body>
+</html>

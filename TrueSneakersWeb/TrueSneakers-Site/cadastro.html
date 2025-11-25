@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta - True Sneakers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* --- ESTILO VISUAL DA IMAGEM --- */
+        body {
+            background-color: #0f0c15; /* Fundo geral quase preto */
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-card {
+            background-color: #16121e; /* Fundo do cartão */
+            border: 1px solid #2d2638; /* Borda sutil */
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px; /* Um pouco mais largo igual a imagem */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            color: #a06cd5; /* Roxo claro do título */
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 5px;
+        }
+
+        .form-control {
+            background-color: #231e2e; /* Fundo roxo escuro dos inputs */
+            border: 1px solid #231e2e;
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px; /* Borda bem arredondada */
+        }
+
+        .form-control:focus {
+            background-color: #2a2438;
+            border-color: #8a2be2; /* Borda roxa neon ao clicar */
+            color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(138, 43, 226, 0.25);
+        }
+        
+        .form-control::placeholder { color: #555; }
+
+        .btn-register {
+            background-color: #8a2be2; /* Botão Roxo Neon */
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-register:hover {
+            background-color: #7b22d3;
+            transform: scale(1.01);
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        .footer-link a { color: #a06cd5; text-decoration: none; font-weight: 600; }
+        .footer-link a:hover { text-decoration: underline; }
+
+        /* Alerta de erro */
+        #msgErro {
+            color: #ff6b6b;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-card">
+        <h2>Criar Conta</h2>
+        <div class="subtitle">Preencha seus dados para se cadastrar</div>
+
+        <div id="msgErro"></div>
+
+        <form id="formCadastro">
+            <div class="mb-3">
+                <label class="form-label">Nome Completo</label>
+                <input type="text" id="nome" class="form-control" placeholder="Seu nome" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="senha" class="form-control" placeholder="........" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Confirmar Senha</label>
+                    <input type="password" id="confirmarSenha" class="form-control" placeholder="........" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-register">Criar Conta</button>
+
+            <div class="footer-link">
+                Já tem uma conta? <a href="index.html">Entrar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const API = "http://localhost:5182/api"; // CONFIRA A PORTA
+
+        document.getElementById("formCadastro").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const nome = document.getElementById("nome").value;
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+            const confirmar = document.getElementById("confirmarSenha").value;
+            const msgErro = document.getElementById("msgErro");
+
+            // 1. Validação de Senha
+            if (senha !== confirmar) {
+                msgErro.innerText = "As senhas não coincidem!";
+                msgErro.style.display = "block";
+                return;
+            }
+
+            msgErro.style.display = "none";
+
+            // 2. Define o Perfil
+            // Regra: Se cadastrou pelo site, é "Usuario" (Cliente)
+            // Para criar um Vendedor, use o Swagger.
+            const usuario = {
+                nome: nome,
+                email: email,
+                senha: senha,
+                perfil: "Usuario" 
+            };
+
+            try {
+                const res = await fetch(`${API}/Usuarios/registrar`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(usuario)
+                });
+
+                if (res.ok) {
+                    alert("Conta criada com sucesso! Faça login.");
+                    window.location.href = "index.html";
+                } else {
+                    let erro = await res.text();
+                    msgErro.innerText = "Erro: " + erro;
+                    msgErro.style.display = "block";
+                }
+            } catch (error) {
+                console.error(error);
+                msgErro.innerText = "Erro ao conectar com a API.";
+                msgErro.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

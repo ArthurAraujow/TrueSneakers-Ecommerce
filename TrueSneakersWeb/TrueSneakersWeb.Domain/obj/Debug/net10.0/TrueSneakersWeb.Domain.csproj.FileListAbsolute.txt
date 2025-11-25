@@ -1,0 +1,12 @@
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\bin\Debug\net10.0\TrueSneakersWeb.Domain.deps.json
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\bin\Debug\net10.0\TrueSneakersWeb.Domain.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\bin\Debug\net10.0\TrueSneakersWeb.Domain.pdb
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.AssemblyInfoInputs.cache
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.AssemblyInfo.cs
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.csproj.CoreCompileInputs.cache
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.sourcelink.json
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\refint\TrueSneakersWeb.Domain.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\TrueSneakersWeb.Domain.pdb
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Domain\obj\Debug\net10.0\ref\TrueSneakersWeb.Domain.dll

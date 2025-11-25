@@ -1,0 +1,16 @@
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\bin\Debug\net10.0\TrueSneakersWeb.Application.deps.json
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\bin\Debug\net10.0\TrueSneakersWeb.Application.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\bin\Debug\net10.0\TrueSneakersWeb.Application.pdb
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\bin\Debug\net10.0\TrueSneakersWeb.Domain.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\bin\Debug\net10.0\TrueSneakersWeb.Domain.pdb
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.csproj.AssemblyReference.cache
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.AssemblyInfoInputs.cache
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.AssemblyInfo.cs
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.csproj.CoreCompileInputs.cache
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.sourcelink.json
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSnea.369680FB.Up2Date
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\refint\TrueSneakersWeb.Application.dll
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\TrueSneakersWeb.Application.pdb
+C:\Users\arthu\Documents\Vsc\True\TrueSneakersWeb\TrueSneakersWeb.Application\obj\Debug\net10.0\ref\TrueSneakersWeb.Application.dll

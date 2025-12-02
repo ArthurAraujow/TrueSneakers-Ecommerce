@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=tenis123
       - POSTGRES_DB=truesneakersdb
     ports:
-      - "5432:5432"
+    - "5440:5432"
     volumes:
       - sneakers_data:/var/lib/postgresql/data
 

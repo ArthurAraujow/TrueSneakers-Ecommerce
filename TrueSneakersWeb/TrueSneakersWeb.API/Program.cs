@@ -7,11 +7,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Banco
+// 1. Configuração do Banco de Dados
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
-// 2. Segurança JWT
+// 2. Configuração do JWT (Segurança)
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
 builder.Services.AddAuthentication(x =>
 {
@@ -34,35 +35,77 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// 3. Swagger
+// 3. Configuração CORS (Para o site funcionar)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
+// 4. Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "TrueSneakers API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Use: Bearer {token}", Name = "Authorization", In = ParameterLocation.Header, Type = SecuritySchemeType.ApiKey, Scheme = "Bearer"
+        Description = "Insira o token JWT assim: Bearer {seu token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement() {{
-        new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }, Scheme = "oauth2", Name = "Bearer", In = ParameterLocation.Header },
-        new List<string>()
-    }});
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
 });
-
-// 4. CORS (Para o site funcionar)
-builder.Services.AddCors(options => { options.AddPolicy("AllowAll", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()); });
 
 var app = builder.Build();
 
-// --- AUTO-MIGRAÇÃO (Cria o banco sozinho) ---
+// --- 🚨 BLOCO DE EMERGÊNCIA: CRIA O BANCO SOZINHO 🚨 ---
+// Isso faz o C# rodar o comando de criar tabelas automaticamente ao iniciar
 using (var scope = app.Services.CreateScope())
 {
-    try { scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate(); }
-    catch { }
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        
+        // TROCAMOS ISSO:
+        // context.Database.Migrate(); 
+        
+        // POR ISSO (Força a criação sem precisar de arquivos de migração):
+        context.Database.EnsureCreated(); 
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Ocorreu um erro ao criar o banco: " + ex.Message);
+    }
 }
-// --------------------------------------------
+// -------------------------------------------------------
 
 app.UseCors("AllowAll");
-if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

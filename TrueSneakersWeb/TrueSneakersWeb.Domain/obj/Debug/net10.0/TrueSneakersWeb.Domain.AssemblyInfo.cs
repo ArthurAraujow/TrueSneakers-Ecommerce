@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrueSneakersWeb.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+81f1b2902acaaaaf6d0fd64cb7c12fe65cf217e3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c680d7b16c34d4a27fda075e3619acb05ee66c7")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrueSneakersWeb.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrueSneakersWeb.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -7,7 +7,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=tenis123
-      - POSTGRES_DB=truesneakersdb
+      - POSTGRES_DB=truesneakerbsd
     ports:
     - "5440:5432"
     volumes:

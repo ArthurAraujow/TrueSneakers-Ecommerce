@@ -76,8 +76,6 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// --- 🚨 BLOCO DE EMERGÊNCIA: CRIA O BANCO SOZINHO 🚨 ---
-// Isso faz o C# rodar o comando de criar tabelas automaticamente ao iniciar
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -85,10 +83,6 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<AppDbContext>();
         
-        // TROCAMOS ISSO:
-        // context.Database.Migrate(); 
-        
-        // POR ISSO (Força a criação sem precisar de arquivos de migração):
         context.Database.EnsureCreated(); 
     }
     catch (Exception ex)
@@ -96,7 +90,6 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("Ocorreu um erro ao criar o banco: " + ex.Message);
     }
 }
-// -------------------------------------------------------
 
 app.UseCors("AllowAll");
 

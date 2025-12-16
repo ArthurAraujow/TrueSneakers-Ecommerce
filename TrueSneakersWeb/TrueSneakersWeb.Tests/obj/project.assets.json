@@ -1047,23 +1047,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\daniel.cezar\\.nuget\\packages\\": {},
+    "C:\\Users\\arthu\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Tests\\TrueSneakersWeb.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Tests\\TrueSneakersWeb.Tests.csproj",
       "projectName": "TrueSneakersWeb.Tests",
-      "projectPath": "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Tests\\TrueSneakersWeb.Tests.csproj",
-      "packagesPath": "C:\\Users\\daniel.cezar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Tests\\obj\\",
+      "projectPath": "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Tests\\TrueSneakersWeb.Tests.csproj",
+      "packagesPath": "C:\\Users\\arthu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\daniel.cezar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\arthu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1079,11 +1079,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Application\\TrueSneakersWeb.Application.csproj": {
-              "projectPath": "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Application\\TrueSneakersWeb.Application.csproj"
+            "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Application\\TrueSneakersWeb.Application.csproj": {
+              "projectPath": "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Application\\TrueSneakersWeb.Application.csproj"
             },
-            "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Domain\\TrueSneakersWeb.Domain.csproj": {
-              "projectPath": "C:\\Users\\daniel.cezar\\Documents\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Domain\\TrueSneakersWeb.Domain.csproj"
+            "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Domain\\TrueSneakersWeb.Domain.csproj": {
+              "projectPath": "C:\\Users\\arthu\\Documents\\Vsc\\TrueSneakers-Ecommerce\\TrueSneakersWeb\\TrueSneakersWeb.Domain\\TrueSneakersWeb.Domain.csproj"
             }
           }
         }
@@ -1098,7 +1098,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "10.0.100"
     },
     "frameworks": {
       "net9.0": {
@@ -1132,12 +1132,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[9.0.11, 9.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[9.0.11, 9.0.11]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[9.0.11, 9.0.11]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
